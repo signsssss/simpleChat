@@ -1,0 +1,17 @@
+<h2>USERS</h2>
+<ul class="users">
+	<li *ngFor="#user of users" 
+		[class.selected]="user === selectedUser"
+		(click)="onSelect(user)">
+		<span class="badge">{{user.id}}</span> {{user.name}}
+	</li>
+</ul>
+<div *ngIf="selectedUser">
+	<h2> {{selectedUser.name | uppercase}} it is!</h2>
+	<button (click)="gotoDetail()">View Details</button>
+</div>
+<!--
+<div><label>id: </label>{{user.id}}</div>
+<div><label>name: </label><input [(ngModel)]="user.name" placeholder="name"></div>
+<div><label>password: </label><input type="password" [(ngModel)]="user.password" placeholder="password"></div>
+-->

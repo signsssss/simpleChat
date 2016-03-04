@@ -1,0 +1,26 @@
+import {RouteCongif, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router';
+import {Component} from 'angular2/core';
+import {UserService} from './user.service';
+import {UsersComponent} from './users.component';
+
+@Component ({
+	selector:'my-app',
+	template:'<h1>{{title}}</h1><a [routerLink]="['Users']">Users</a><router-outlet></router-outlet>',
+	directives: [ROUTER_DIRECTIVES],
+	providers: [
+		ROUTER_PROVIDERS,
+		UserService
+	]
+})
+
+@RouteConfig([
+	{
+		path:'/users',
+		name:'Users',
+		component: UsersComponent
+	}
+])
+
+export class AppComponent {
+	title = 'Login';
+}
