@@ -1,4 +1,4 @@
-System.register(['angular2/router', 'angular2/core', './user.service', './users.component', './dashboard.component', './user-detail.component'], function(exports_1, context_1) {
+System.register(['angular2/router', 'angular2/core', 'angular2/http', './user.service', './users.component', './dashboard.component', './user-detail.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/router', 'angular2/core', './user.service', './users.
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var router_1, core_1, user_service_1, users_component_1, dashboard_component_1, user_detail_component_1;
+    var router_1, core_1, http_1, user_service_1, users_component_1, dashboard_component_1, user_detail_component_1;
     var AppComponent;
     return {
         setters:[
@@ -19,6 +19,9 @@ System.register(['angular2/router', 'angular2/core', './user.service', './users.
             },
             function (core_1_1) {
                 core_1 = core_1_1;
+            },
+            function (http_1_1) {
+                http_1 = http_1_1;
             },
             function (user_service_1_1) {
                 user_service_1 = user_service_1_1;
@@ -40,10 +43,11 @@ System.register(['angular2/router', 'angular2/core', './user.service', './users.
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: 'my-app',
-                        template: "\n\t\t<h1>{{title}}</h1>\n\t\t<nav>\n\t\t\t<a [routerLink]=\"['Dashboard']\">Dashboard</a>\n\t\t\t<a [routerLink]=\"['Users']\">Users</a>\n\t\t</nav>\n\t\t<router-outlet></router-outlet>\n\t",
-                        styleUrls: ['app/app.component.css'],
+                        template: "\n\t\t<h1>{{title}}</h1>\n\t\t<router-outlet></router-outlet>\n\t",
+                        styleUrls: ['src/css/app.component.css'],
                         directives: [router_1.ROUTER_DIRECTIVES],
                         providers: [
+                            http_1.HTTP_PROVIDERS,
                             router_1.ROUTER_PROVIDERS,
                             user_service_1.UserService
                         ]
@@ -55,7 +59,7 @@ System.register(['angular2/router', 'angular2/core', './user.service', './users.
                             component: users_component_1.UsersComponent
                         },
                         {
-                            path: '/dashboard',
+                            path: '/home',
                             name: 'Dashboard',
                             component: dashboard_component_1.DashboardComponent,
                             useAsDefault: true

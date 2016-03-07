@@ -1,0 +1,11 @@
+<div class="grid grid-pad">
+	<div class="login">
+		<label id="id">ID: 
+			<input #userId type="text"/>
+		</label>
+		<label id="password">Password: 
+			<input #userPw type="password"/>
+		</label>
+	</div>
+	<button (click)="login(userId.value, userPw.value)">login</button>
+</div>

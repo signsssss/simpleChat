@@ -1,4 +1,4 @@
-System.register(['./mock-users', 'angular2/core'], function(exports_1, context_1) {
+System.register(['./mock-users', 'angular2/core', 'angular2/http'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['./mock-users', 'angular2/core'], function(exports_1, context_1
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var mock_users_1, core_1;
+    var mock_users_1, core_1, http_1;
     var UserService;
     return {
         setters:[
@@ -19,10 +19,14 @@ System.register(['./mock-users', 'angular2/core'], function(exports_1, context_1
             },
             function (core_1_1) {
                 core_1 = core_1_1;
+            },
+            function (http_1_1) {
+                http_1 = http_1_1;
             }],
         execute: function() {
             UserService = (function () {
-                function UserService() {
+                function UserService(http) {
+                    this.http = http;
                 }
                 UserService.prototype.getUsers = function () {
                     return Promise.resolve(mock_users_1.USERS);
@@ -35,9 +39,24 @@ System.register(['./mock-users', 'angular2/core'], function(exports_1, context_1
                 UserService.prototype.getUser = function (id) {
                     return Promise.resolve(mock_users_1.USERS).then(function (users) { return users.filter(function (user) { return user.id === id; })[0]; });
                 };
+                UserService.prototype.login = function (userId, userPw) {
+                    var user = {};
+                    user.id = userId;
+                    user.pw = userPw;
+                    var body = JSON.stringify(user);
+                    var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+                    var options = new http_1.RequestOptions({ headers: headers });
+                    return this.http.post('login', body, options)
+                        .map(function (res) { return console.log(res.json().data); })
+                        .catch(this.handleError);
+                };
+                UserService.prototype.handleError = function (error) {
+                    console.error(error);
+                    return Promise.reject(error.message || error.json().error || 'Server error');
+                };
                 UserService = __decorate([
                     core_1.Injectable(), 
-                    __metadata('design:paramtypes', [])
+                    __metadata('design:paramtypes', [http_1.Http])
                 ], UserService);
                 return UserService;
             }());

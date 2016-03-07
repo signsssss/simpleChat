@@ -7,8 +7,8 @@ import {UserService} from './user.service';
 
 @Component({
 	selector: 'my-users',
-	templateUrl: 'app/app.template.html',
-	styleUrls: ['app/users.component.css'],
+	templateUrl: 'app.template.html',
+	styleUrls: ['src/css/users.component.css'],
 	directives: [UserDetailComponent]
 })
 

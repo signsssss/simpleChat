@@ -6,7 +6,7 @@ import {User} from './user';
 
 @Component ({
 	selector:'my-user-detail',
-	templateUrl:'app/user-detail.template.html',
+	templateUrl:'user-detail.template.html',
 })
 
 export class UserDetailComponent implements OnInit {

@@ -1,4 +1,4 @@
-System.register(['angular2/core', 'angular2/router', './user.service'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/router', './user-detail.component', './user.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,8 +10,8 @@ System.register(['angular2/core', 'angular2/router', './user.service'], function
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var core_1, router_1, user_service_1;
-    var DashboardComponent;
+    var core_1, router_1, user_detail_component_1, user_service_1;
+    var UsersComponent;
     return {
         setters:[
             function (core_1_1) {
@@ -20,37 +20,42 @@ System.register(['angular2/core', 'angular2/router', './user.service'], function
             function (router_1_1) {
                 router_1 = router_1_1;
             },
+            function (user_detail_component_1_1) {
+                user_detail_component_1 = user_detail_component_1_1;
+            },
             function (user_service_1_1) {
                 user_service_1 = user_service_1_1;
             }],
         execute: function() {
-            DashboardComponent = (function () {
-                function DashboardComponent(_router, _userService) {
+            UsersComponent = (function () {
+                function UsersComponent(_router, _userService) {
                     this._router = _router;
                     this._userService = _userService;
-                    this.users = [];
                 }
-                DashboardComponent.prototype.ngOnInit = function () {
+                UsersComponent.prototype.getUsers = function () {
                     var _this = this;
-                    this._userService.getUsers()
-                        .then(function (users) { return _this.users = users.slice(1, 5); });
+                    this._userService.getUsersSlowly().then(function (users) { return _this.users = users; });
                 };
-                DashboardComponent.prototype.gotoDetail = function (user) {
-                    var link = ['UserDetail', { id: user.id }];
-                    this._router.navigate(link);
+                UsersComponent.prototype.ngOnInit = function () {
+                    this.getUsers();
                 };
-                DashboardComponent = __decorate([
+                UsersComponent.prototype.onSelect = function (user) { this.selectedUser = user; };
+                UsersComponent.prototype.gotoDetail = function () {
+                    this._router.navigate(['UserDetail', { id: this.selectedUser.id }]);
+                };
+                UsersComponent = __decorate([
                     core_1.Component({
-                        selector: 'my-dashboard',
-                        templateUrl: 'app/dashboard.template.html',
-                        styleUrls: ['app/dashboard.component.css']
+                        selector: 'my-users',
+                        templateUrl: 'app.template.html',
+                        styleUrls: ['src/css/users.component.css'],
+                        directives: [user_detail_component_1.UserDetailComponent]
                     }), 
                     __metadata('design:paramtypes', [router_1.Router, user_service_1.UserService])
-                ], DashboardComponent);
-                return DashboardComponent;
+                ], UsersComponent);
+                return UsersComponent;
             }());
-            exports_1("DashboardComponent", DashboardComponent);
+            exports_1("UsersComponent", UsersComponent);
         }
     }
 });
-//# sourceMappingURL=dashboard.component.js.map
+//# sourceMappingURL=users.component.js.map

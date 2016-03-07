@@ -41,7 +41,7 @@ System.register(['angular2/router', 'angular2/core', './user.service'], function
                 UserDetailComponent = __decorate([
                     core_1.Component({
                         selector: 'my-user-detail',
-                        templateUrl: 'app/user-detail.template.html',
+                        templateUrl: 'user-detail.template.html',
                     }), 
                     __metadata('design:paramtypes', [user_service_1.UserService, router_1.RouteParams])
                 ], UserDetailComponent);
