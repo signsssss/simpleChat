@@ -11,7 +11,7 @@ import {UserService} from './user.service';
 })
 
 export class DashboardComponent {
-	user = {id: "", password: ""};
+	userId = "";
 
 	constructor(
 		private _router: Router,
@@ -19,8 +19,16 @@ export class DashboardComponent {
 	}
 
 	login(userId: string, userPw: string) {
+		this.userId = userId;
 		if(!userId || !userPw) {return;}
-		console.log('userId');
-		this._userService.login(userId, userPw);
+		this._userService.login(userId, userPw)
+			.subscribe(
+				res => {
+					if(res) {
+						this._router.navigate(['RoomList', {userId: this.userId}]);
+					}
+				},
+				error => console.log(error)
+		);
 	}
 }

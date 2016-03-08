@@ -7,7 +7,7 @@ import {UserService} from './user.service';
 
 @Component({
 	selector: 'my-users',
-	templateUrl: 'app.template.html',
+	templateUrl: 'src/app.template.html',
 	styleUrls: ['src/css/users.component.css'],
 	directives: [UserDetailComponent]
 })
@@ -15,17 +15,25 @@ import {UserService} from './user.service';
 export class UsersComponent implements OnInit {
 	users: User[];
 	selectedUser: User;
+	userId: string;
 
 	constructor(
 		private _router: Router,
 		private _userService:UserService) {}
 
 	getUsers() {
-		this._userService.getUsersSlowly().then(users => this.users = users);
+		this._userService.getUsers(this.userId)
+			.subscribe (
+				res => {
+					console.log(res);
+				}
+			);
 	}
 
 	ngOnInit() {
-		this.getUsers();
+		this.userId = this._routerParams.get('userId');
+		console.log(id);
+		this.getUsers(id);
 	}
 
 	onSelect(user: User) {this.selectedUser = user;}

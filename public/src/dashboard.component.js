@@ -28,14 +28,20 @@ System.register(['angular2/core', 'angular2/router', './user.service'], function
                 function DashboardComponent(_router, _userService) {
                     this._router = _router;
                     this._userService = _userService;
-                    this.user = { id: "", password: "" };
+                    this.userId = "";
                 }
                 DashboardComponent.prototype.login = function (userId, userPw) {
+                    var _this = this;
+                    this.userId = userId;
                     if (!userId || !userPw) {
                         return;
                     }
-                    console.log('userId');
-                    this._userService.login(userId, userPw);
+                    this._userService.login(userId, userPw)
+                        .subscribe(function (res) {
+                        if (res) {
+                            _this._router.navigate(['RoomList', { userId: _this.userId }]);
+                        }
+                    }, function (error) { return console.log(error); });
                 };
                 DashboardComponent = __decorate([
                     core_1.Component({

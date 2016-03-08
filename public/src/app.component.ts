@@ -25,8 +25,8 @@ import {UserDetailComponent} from './user-detail.component';
 
 @RouteConfig([
 	{
-		path:'/users',
-		name:'Users',
+		path:'/rooms',
+		name:'RoomList',
 		component: UsersComponent
 	},
 	{

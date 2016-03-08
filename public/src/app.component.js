@@ -54,8 +54,8 @@ System.register(['angular2/router', 'angular2/core', 'angular2/http', './user.se
                     }),
                     router_1.RouteConfig([
                         {
-                            path: '/users',
-                            name: 'Users',
+                            path: '/rooms',
+                            name: 'RoomList',
                             component: users_component_1.UsersComponent
                         },
                         {

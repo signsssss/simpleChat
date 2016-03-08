@@ -33,11 +33,15 @@ System.register(['angular2/core', 'angular2/router', './user-detail.component', 
                     this._userService = _userService;
                 }
                 UsersComponent.prototype.getUsers = function () {
-                    var _this = this;
-                    this._userService.getUsersSlowly().then(function (users) { return _this.users = users; });
+                    this._userService.getUsers(this.userId)
+                        .subscribe(function (res) {
+                        console.log(res);
+                    });
                 };
                 UsersComponent.prototype.ngOnInit = function () {
-                    this.getUsers();
+                    this.userId = this._routerParams.get('userId');
+                    console.log(id);
+                    this.getUsers(id);
                 };
                 UsersComponent.prototype.onSelect = function (user) { this.selectedUser = user; };
                 UsersComponent.prototype.gotoDetail = function () {
@@ -46,7 +50,7 @@ System.register(['angular2/core', 'angular2/router', './user-detail.component', 
                 UsersComponent = __decorate([
                     core_1.Component({
                         selector: 'my-users',
-                        templateUrl: 'app.template.html',
+                        templateUrl: 'src/app.template.html',
                         styleUrls: ['src/css/users.component.css'],
                         directives: [user_detail_component_1.UserDetailComponent]
                     }), 

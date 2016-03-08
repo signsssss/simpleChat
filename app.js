@@ -1,60 +1,53 @@
 "use strict";
 
 let express = require("express");
-let app = express();
-
 let mongorito = require("mongorito");
+let bodyParser = require("body-parser");
+let co = require("co");
+let db = require("./db");
+
+let app = express();
 
 app.use( express.static(__dirname + " /index.html") );
 app.use( express.static(__dirname + "/public") );
+app.use(bodyParser());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded());
 
-let bodyParser = require("body-parser");
-let jsonParser = bodyParser.json();
+app.post("/login", (req, res) => {
+	co(function*() {
+		var user = yield db.User.findOne({ id: req.body.userId });
 
-//app.get("/login", (request, response) => {
-//	console.log('login');
-//});
+		if(user) {
+			console.log(user);
+			var password = user.get('pw');
 
-app.post("/login", (request, response) => {
-	let user = request.params.name;
-	console.log(user);
+			if(req.body.userPw == password) {
+				res.json(user.get('_id'));
+			} else {
+				console.log('wrong password');
+				res.json(false);
+			}
+		} else {
+			console.log('no such user!');
+			res.json(false);
+		}
+	})
 })
 
-/*
-app.get("/sports/:name", (request, response) => {
-	let sportName = request.params.name;
+app.get('/rooms', (req, res) => {
+	co(function*() {
+		var rooms = yield db.User.findOne({ id: req.body.userId}, {rooms: true});
 
-	let sports = mongoUtil.sports();
-	sports.find({name: sportName}).limit(1).next((err,doc) => {
-		if(err) {
-			response.sendStatus(400);
+		if(rooms) {
+			console.log('there are rooms!');
 		}
-		console.log( "Sport doc: ", doc );
-		response.json(doc);
-	});
+	})
 
-});
+})
 
-
-app.post("/sports/:name/medals", jsonParser, (request, response) => {
-	let sportName = request.params.name;
-	let newMedal = request.body.medal || {};
-
-	if(!newMedal.division || !newMedal.year || !newMedal.country){
-		response.sendStatus(400);
-	}
-
-	let sports = mongoUtil.sports();
-	let query = {name: sportName};
-	let update = {$push: {goldMedals: newMedal}};
-
-	sports.findOneAndUpdate(query, update, (err, res) => {
-		if(err){
-			response.sendStatus(400);
-		}
-		response.sendStatus(201);
-	});
-});*/
-
+app.get('/home', (request, response) => {
+	console.log('im home!');
+})
 
 app.listen(8181, () => console.log( "Listening on 8181" ));

@@ -31,7 +31,7 @@ System.register(['angular2/router', 'angular2/core', './user.service'], function
                 }
                 UserDetailComponent.prototype.ngOnInit = function () {
                     var _this = this;
-                    var id = +this._routeParams.get('id');
+                    var id = this._routeParams.get('id');
                     this._userService.getUser(id)
                         .then(function (user) { return _this.user = user; });
                 };
@@ -41,7 +41,7 @@ System.register(['angular2/router', 'angular2/core', './user.service'], function
                 UserDetailComponent = __decorate([
                     core_1.Component({
                         selector: 'my-user-detail',
-                        templateUrl: 'user-detail.template.html',
+                        templateUrl: 'src/user-detail.template.html',
                     }), 
                     __metadata('design:paramtypes', [user_service_1.UserService, router_1.RouteParams])
                 ], UserDetailComponent);

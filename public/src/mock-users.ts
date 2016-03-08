@@ -1,14 +1,14 @@
 import {User} from './user';
 
 export var USERS:User[] = [
-	{"id":11, "password":"password"},
-	{"id":12, "password":"password"},
-	{"id":13, "password":"password"},
-	{"id":14, "password":"password"},
-	{"id":15, "password":"password"},
-	{"id":16, "password":"password"},
-	{"id":17, "password":"password"},
-	{"id":18, "password":"password"},
-	{"id":19, "password":"password"},
-	{"id":20, "password":"password"}
+	{"id":"A", "password":"password"},
+	{"id":"B", "password":"password"},
+	{"id":"C", "password":"password"},
+	{"id":"D", "password":"password"},
+	{"id":"E", "password":"password"},
+	{"id":"F", "password":"password"},
+	{"id":"G", "password":"password"},
+	{"id":"H", "password":"password"},
+	{"id":"I", "password":"password"},
+	{"id":"J", "password":"password"}
 ];

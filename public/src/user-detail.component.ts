@@ -6,7 +6,7 @@ import {User} from './user';
 
 @Component ({
 	selector:'my-user-detail',
-	templateUrl:'user-detail.template.html',
+	templateUrl:'src/user-detail.template.html',
 })
 
 export class UserDetailComponent implements OnInit {
@@ -18,7 +18,7 @@ export class UserDetailComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		let id = +this._routeParams.get('id');
+		let id = this._routeParams.get('id');
 		this._userService.getUser(id)
 		.then(user => this.user = user);
 	}

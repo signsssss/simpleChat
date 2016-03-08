@@ -19,28 +19,28 @@ export class UserService {
 		);
 	}
 
-	getUser(id: number) {
-		return Promise.resolve(USERS).then(
-			users => users.filter(user => user.id === id)[0]
-		);
+	getUser(userId: string) {
+		let body = JSON.stringify({userId});
+		let headers = new Headers({ 'Content-Type': 'application/json' });
+		let options = new RequestOptions({ headers: headers });
+
+		return this.http.get('rooms')
+			.map(res => res.json())
+			.catch(this.handleError);
 	}
 
 	login(userId: string, userPw: string) {
-		let user = {};
-		user.id = userId;
-		user.pw = userPw;
-
-		let body = JSON.stringify(user);
+		let body = JSON.stringify({userId, userPw});
 		let headers = new Headers({ 'Content-Type':'application/json' });
 		let options = new RequestOptions({ headers: headers});
-
+		
 		return this.http.post('login', body, options)
-			.map(res => console.log(res.json().data))
-			.catch(this.handleError)
+			.map(res => res.json())
+			.catch(this.handleError);
 	}
-	
-	private handleError (error: any) {
-		console.error(error);
-		return Promise.reject(error.message || error.json().error || 'Server error');
+
+	private handleError (error: Response) {
+		console.log(error);
+		return Observable.throw (error.json().error || 'Server error');
 	}
 }
