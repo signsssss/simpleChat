@@ -31,12 +31,24 @@ System.register(['angular2/router', 'angular2/core', './user.service'], function
                 }
                 UserDetailComponent.prototype.ngOnInit = function () {
                     var _this = this;
-                    var id = this._routeParams.get('id');
-                    this._userService.getUser(id)
-                        .then(function (user) { return _this.user = user; });
+                    this.roomId = this._routeParams.get('roomId');
+                    this.chatBox = "";
+                    this.socket = io();
+                    this.socket.on("chat_message", function (msg) {
+                        _this.logs.push(msg);
+                    });
+                    this._userService.joinChatting(this.roomId)
+                        .subscribe(function (res) {
+                        _this.logs = res;
+                        console.log('logs.length: ', _this.logs.length);
+                    });
                 };
                 UserDetailComponent.prototype.goBack = function () {
                     window.history.back();
+                };
+                UserDetailComponent.prototype.send = function (message) {
+                    this.socket.emit("chat_message", message);
+                    this.chatBox = "";
                 };
                 UserDetailComponent = __decorate([
                     core_1.Component({

@@ -9,14 +9,52 @@ import {Observable} from 'rxjs/Observable';
 export class UserService {
 	constructor (private http: Http) {}
 
-	getUsers() {
-		return Promise.resolve(USERS);
+	login(userId: string, userPw: string) {
+		let body = JSON.stringify({userId, userPw});
+		let headers = new Headers({ 'Content-Type':'application/json' });
+		let options = new RequestOptions({ headers: headers});
+
+		return this.http.post('login', body, options)
+			.map(res => res.json())
+			.catch(this.handleError);
 	}
 
-	getUsersSlowly() {
-		return new Promise<User[]>(resolve =>
-			setTimeout(()=>resolve(USERS), 2000)
-		);
+	join(userId: string, userPw: string) {
+		let body = JSON.stringify({userId, userPw});
+		let headers = new Headers({ 'Content-Type':'application/json' });
+		let options = new RequestOptions({ headers: headers});
+
+		return this.http.post('join', body, options)
+			.map(res => res.json())
+			.catch(this.handleError);
+	}
+
+	getRooms(userId: string) {
+		let headers = new Headers({ 'Content-Type':'application/json' });
+		let options = new RequestOptions({ headers: headers});
+
+		return this.http.get('rooms/'+userId)
+			.map(res => res.json() )
+			.catch(this.handleError);
+	}
+
+	addRoom(userId: string, friendId: string) {
+		let body = JSON.stringify({userId, friendId});
+		let headers = new Headers({ 'Content-Type':'application/json' });
+		let options = new RequestOptions({ headers: headers});
+
+		return this.http.post('rooms', body, options)
+			.map(res => res.json())
+			.catch(this.handleError);
+	}
+
+	joinChatting(roomId: string) {
+		let headers = new Headers({ 'Content-Type':'application/json' });
+		let options = new RequestOptions({ headers: headers});
+
+		return this.http.get('room/'+roomId)
+			.map(res => res.json() )
+			.catch(this.handleError);
 	}
 
 	getUser(userId: string) {
@@ -25,16 +63,6 @@ export class UserService {
 		let options = new RequestOptions({ headers: headers });
 
 		return this.http.get('rooms')
-			.map(res => res.json())
-			.catch(this.handleError);
-	}
-
-	login(userId: string, userPw: string) {
-		let body = JSON.stringify({userId, userPw});
-		let headers = new Headers({ 'Content-Type':'application/json' });
-		let options = new RequestOptions({ headers: headers});
-		
-		return this.http.post('login', body, options)
 			.map(res => res.json())
 			.catch(this.handleError);
 	}

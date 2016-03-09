@@ -38,7 +38,7 @@ System.register(['angular2/router', 'angular2/core', 'angular2/http', './user.se
         execute: function() {
             AppComponent = (function () {
                 function AppComponent() {
-                    this.title = 'Login';
+                    this.title = 'Simple Chat App';
                 }
                 AppComponent = __decorate([
                     core_1.Component({
@@ -65,8 +65,8 @@ System.register(['angular2/router', 'angular2/core', 'angular2/http', './user.se
                             useAsDefault: true
                         },
                         {
-                            path: '/detail/:id',
-                            name: 'UserDetail',
+                            path: '/room/:roomId',
+                            name: 'Room',
                             component: user_detail_component_1.UserDetailComponent
                         }
                     ]), 

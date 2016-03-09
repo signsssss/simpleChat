@@ -1,4 +1,4 @@
-<div *ngIf="user">
+<!-- <div *ngIf="user">
 	<h2>{{user.name}} details!</h2>
 	<div><label> id: </label>{{user.id}}</div>
 	<div>
@@ -6,4 +6,15 @@
 		<input [(ngModel)]="user.name" placeholder="name"/>
 	</div>
 	<button (click)="goBack()">Back</button>
-</div>
+</div> -->
+<ul>
+	<li *ngFor="#log of logs">
+		<div>
+			<label>{{log.sender}}: </label>{{log.content}}
+		</div>
+	</li>
+</ul>
+
+<form action="">
+	<input [(ngModel)]="chatBox" autocomplete="off" /><button (click)="send(chatBox)">Send></button>
+</form>

@@ -28,33 +28,48 @@ System.register(['angular2/core', 'angular2/router', './user-detail.component', 
             }],
         execute: function() {
             UsersComponent = (function () {
-                function UsersComponent(_router, _userService) {
+                function UsersComponent(_router, _routeParams, _userService) {
                     this._router = _router;
+                    this._routeParams = _routeParams;
                     this._userService = _userService;
                 }
                 UsersComponent.prototype.getUsers = function () {
-                    this._userService.getUsers(this.userId)
+                    var _this = this;
+                    this._userService.getRooms(this.userId)
                         .subscribe(function (res) {
-                        console.log(res);
-                    });
+                        if (res) {
+                            _this.rooms = res;
+                        }
+                        else {
+                            return;
+                        }
+                    }, function (error) { return _this.errorMessage = error; });
                 };
                 UsersComponent.prototype.ngOnInit = function () {
-                    this.userId = this._routerParams.get('userId');
-                    console.log(id);
-                    this.getUsers(id);
+                    this.userId = this._routeParams.get('userId');
+                    this.getUsers();
                 };
-                UsersComponent.prototype.onSelect = function (user) { this.selectedUser = user; };
-                UsersComponent.prototype.gotoDetail = function () {
-                    this._router.navigate(['UserDetail', { id: this.selectedUser.id }]);
+                UsersComponent.prototype.onSelect = function (room) { this.selectedRoom = room; };
+                UsersComponent.prototype.addRoom = function (friendId) {
+                    var _this = this;
+                    this._userService.addRoom(this.userId, friendId)
+                        .subscribe(function (res) {
+                        if (res) {
+                            _this.rooms = res;
+                        }
+                    });
+                };
+                UsersComponent.prototype.joinChatting = function () {
+                    this._router.navigate(['Room', { roomId: this.selectedRoom.roomId }]);
                 };
                 UsersComponent = __decorate([
                     core_1.Component({
                         selector: 'my-users',
-                        templateUrl: 'src/app.template.html',
+                        templateUrl: 'src/users.template.html',
                         styleUrls: ['src/css/users.component.css'],
                         directives: [user_detail_component_1.UserDetailComponent]
                     }), 
-                    __metadata('design:paramtypes', [router_1.Router, user_service_1.UserService])
+                    __metadata('design:paramtypes', [router_1.Router, router_1.RouteParams, user_service_1.UserService])
                 ], UsersComponent);
                 return UsersComponent;
             }());

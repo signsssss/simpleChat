@@ -3,6 +3,9 @@ import {Component, OnInit} from 'angular2/core';
 
 import {UserService} from './user.service';
 import {User} from './user';
+import {Room} from './room';
+
+declare var io: any;
 
 @Component ({
 	selector:'my-user-detail',
@@ -10,7 +13,11 @@ import {User} from './user';
 })
 
 export class UserDetailComponent implements OnInit {
-	user: User;
+	room: Room;
+	roomId: string;
+	logs: Log[];
+	socket: any;
+	chatBox: string;
 
 	constructor(
 		private _userService: UserService,
@@ -18,12 +25,34 @@ export class UserDetailComponent implements OnInit {
 	}
 
 	ngOnInit() {
-		let id = this._routeParams.get('id');
-		this._userService.getUser(id)
-		.then(user => this.user = user);
+		this.roomId = this._routeParams.get('roomId');
+		this.chatBox = "";
+		this.socket = io();
+		this.socket.on("chat_message", (msg) => {
+			this.logs.push(msg);
+		})
+
+		this._userService.joinChatting(this.roomId)
+			.subscribe (
+				res => {
+						this.logs = res;
+						console.log('logs.length: ' ,this.logs.length);
+				}
+			);
 	}
 
 	goBack() {
 		window.history.back();
 	}
+
+	send(message) {
+		this.socket.emit("chat_message", message);
+		this.chatBox = "";
+	}
+}
+
+interface Log {
+	sender: string,
+	content: string,
+	created: number
 }

@@ -43,6 +43,19 @@ System.register(['angular2/core', 'angular2/router', './user.service'], function
                         }
                     }, function (error) { return console.log(error); });
                 };
+                DashboardComponent.prototype.join = function (userId, userPw) {
+                    var _this = this;
+                    this.userId = userId;
+                    if (!userId || !userPw) {
+                        return;
+                    }
+                    this._userService.join(userId, userPw)
+                        .subscribe(function (res) {
+                        if (res) {
+                            _this._router.navigate(['RoomList', { userId: _this.userId }]);
+                        }
+                    }, function (error) { return console.log(error); });
+                };
                 DashboardComponent = __decorate([
                     core_1.Component({
                         selector: 'my-dashboard',

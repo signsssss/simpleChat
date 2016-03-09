@@ -1,44 +1,63 @@
 import {Component, OnInit} from 'angular2/core';
-import {Router} from 'angular2/router';
+import {Router, RouteParams} from 'angular2/router';
 
 import {User} from './user';
+import {Room} from './room'
 import {UserDetailComponent} from './user-detail.component';
 import {UserService} from './user.service';
 
 @Component({
 	selector: 'my-users',
-	templateUrl: 'src/app.template.html',
+	templateUrl: 'src/users.template.html',
 	styleUrls: ['src/css/users.component.css'],
 	directives: [UserDetailComponent]
 })
 
 export class UsersComponent implements OnInit {
-	users: User[];
-	selectedUser: User;
+	selectedRoom: Room;
+	rooms: Room[];
 	userId: string;
+	errorMessage: string;
 
 	constructor(
 		private _router: Router,
+		private _routeParams: RouteParams,
 		private _userService:UserService) {}
 
 	getUsers() {
-		this._userService.getUsers(this.userId)
+		this._userService.getRooms(this.userId)
 			.subscribe (
 				res => {
-					console.log(res);
-				}
+					if(res) {
+						this.rooms = res;
+					} else {
+						return;
+					}
+				},
+				error => this.errorMessage = <any> error
 			);
 	}
 
 	ngOnInit() {
-		this.userId = this._routerParams.get('userId');
-		console.log(id);
-		this.getUsers(id);
+		this.userId = this._routeParams.get('userId');
+		this.getUsers();
 	}
 
-	onSelect(user: User) {this.selectedUser = user;}
+	onSelect(room: Room) {this.selectedRoom = room;}
 
-	gotoDetail() {
-		this._router.navigate(['UserDetail', {id: this.selectedUser.id}]);
+	addRoom(friendId: string) {
+		this._userService.addRoom(this.userId, friendId)
+			.subscribe (
+				res => {
+					if(res) {
+						this.rooms = res;
+						//this._router.navigate( ['RoomList', {userId: this.userId}] );
+					}
+				}
+			);
+	}
+
+	joinChatting() {
+		this._router.navigate( ['Room', {roomId: this.selectedRoom.roomId}]);
 	}
 }

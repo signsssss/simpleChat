@@ -16,7 +16,7 @@ var encrypt = function(msg) {
 	/*var cipher = crypto.createCipher(algorithm, password);
 	var encrypted = cipher.update(msg, 'utf8', 'hex');
 	encrypted += cipher.final('hex');
-	
+
 	return encrypted;*/
 	return crypto.createHash('sha512').update(cnonce + user.password + req.session.snonce).digest('hex');
 
@@ -26,7 +26,7 @@ var decrypt = function(msg) {
 	var decipher = crypto.createDecipher(algorithm, password);
 	var decrypted = decipher.update(msg, 'hex', 'utf8');
 	decrypted += decipher.final('utf8');
-	
+
 	return decrypted;
 };
 
@@ -55,12 +55,15 @@ var UserSchema = {
 			items: {
 				type: 'object',
 				properties: {
-					id: {
+					friendId: {
 						type: 'object'
 					},
 					accessed: {
 						type: 'integer',
 						length: 13
+					},
+					roomId: {
+						type: 'object'
 					}
 				}
 			}
@@ -69,7 +72,46 @@ var UserSchema = {
 	required: [ 'userId', 'password' ]
 }
 
-var User = Model.extend({ 
+var RoomSchema = {
+	type: 'object',
+	properties: {
+		created: {
+			type: 'integer',
+			length: 13
+		},
+		accessed: {
+			type: 'integer',
+			length: 13
+		},
+		participants: {
+			type: 'array',
+			itmes: {
+				type: 'object'
+			}
+		},
+		log: {
+			type: 'array',
+			itmes: {
+				type: 'object',
+				properties: {
+					sender: {
+						type: 'object'
+					},
+					content: {
+						type: 'string'
+					},
+					created: {
+						type: 'integer',
+						length: 13
+					}
+				}
+			}
+		}
+	},
+	required: ['created', 'participants']
+}
+
+var User = Model.extend({
 	collection: 'users'
 	/*configure: function() {
 		this.before('save', 'validate');
@@ -85,9 +127,15 @@ var User = Model.extend({
 	}*/
 });
 
+var Room = Model.extend({
+	collection: 'rooms'
+});
+
 exports.UserSchema = UserSchema;
+exports.RoomSchema = RoomSchema;
 
 exports.User = User;
+exports.Room = Room;
 
 exports.hash = hash;
 exports.encrypt = encrypt;

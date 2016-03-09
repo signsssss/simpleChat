@@ -1,4 +1,4 @@
-System.register(['./mock-users', 'angular2/core', 'angular2/http', 'rxjs/Observable'], function(exports_1, context_1) {
+System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,13 +10,10 @@ System.register(['./mock-users', 'angular2/core', 'angular2/http', 'rxjs/Observa
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var mock_users_1, core_1, http_1, Observable_1;
+    var core_1, http_1, Observable_1;
     var UserService;
     return {
         setters:[
-            function (mock_users_1_1) {
-                mock_users_1 = mock_users_1_1;
-            },
             function (core_1_1) {
                 core_1 = core_1_1;
             },
@@ -31,27 +28,49 @@ System.register(['./mock-users', 'angular2/core', 'angular2/http', 'rxjs/Observa
                 function UserService(http) {
                     this.http = http;
                 }
-                UserService.prototype.getUsers = function () {
-                    return Promise.resolve(mock_users_1.USERS);
+                UserService.prototype.login = function (userId, userPw) {
+                    var body = JSON.stringify({ userId: userId, userPw: userPw });
+                    var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+                    var options = new http_1.RequestOptions({ headers: headers });
+                    return this.http.post('login', body, options)
+                        .map(function (res) { return res.json(); })
+                        .catch(this.handleError);
                 };
-                UserService.prototype.getUsersSlowly = function () {
-                    return new Promise(function (resolve) {
-                        return setTimeout(function () { return resolve(mock_users_1.USERS); }, 2000);
-                    });
+                UserService.prototype.join = function (userId, userPw) {
+                    var body = JSON.stringify({ userId: userId, userPw: userPw });
+                    var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+                    var options = new http_1.RequestOptions({ headers: headers });
+                    return this.http.post('join', body, options)
+                        .map(function (res) { return res.json(); })
+                        .catch(this.handleError);
+                };
+                UserService.prototype.getRooms = function (userId) {
+                    var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+                    var options = new http_1.RequestOptions({ headers: headers });
+                    return this.http.get('rooms/' + userId)
+                        .map(function (res) { return res.json(); })
+                        .catch(this.handleError);
+                };
+                UserService.prototype.addRoom = function (userId, friendId) {
+                    var body = JSON.stringify({ userId: userId, friendId: friendId });
+                    var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+                    var options = new http_1.RequestOptions({ headers: headers });
+                    return this.http.post('rooms', body, options)
+                        .map(function (res) { return res.json(); })
+                        .catch(this.handleError);
+                };
+                UserService.prototype.joinChatting = function (roomId) {
+                    var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+                    var options = new http_1.RequestOptions({ headers: headers });
+                    return this.http.get('room/' + roomId)
+                        .map(function (res) { return res.json(); })
+                        .catch(this.handleError);
                 };
                 UserService.prototype.getUser = function (userId) {
                     var body = JSON.stringify({ userId: userId });
                     var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
                     var options = new http_1.RequestOptions({ headers: headers });
                     return this.http.get('rooms')
-                        .map(function (res) { return res.json(); })
-                        .catch(this.handleError);
-                };
-                UserService.prototype.login = function (userId, userPw) {
-                    var body = JSON.stringify({ userId: userId, userPw: userPw });
-                    var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-                    var options = new http_1.RequestOptions({ headers: headers });
-                    return this.http.post('login', body, options)
                         .map(function (res) { return res.json(); })
                         .catch(this.handleError);
                 };

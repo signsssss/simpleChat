@@ -36,12 +36,12 @@ import {UserDetailComponent} from './user-detail.component';
 		useAsDefault: true
 	},
 	{
-		path:'/detail/:id',
-		name:'UserDetail',
+		path:'/room/:roomId',
+		name:'Room',
 		component: UserDetailComponent
 	}
 ])
 
 export class AppComponent {
-	title = 'Login';
+	title = 'Simple Chat App';
 }

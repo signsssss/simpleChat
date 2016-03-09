@@ -31,4 +31,18 @@ export class DashboardComponent {
 				error => console.log(error)
 		);
 	}
+
+	join(userId: string, userPw: string) {
+		this.userId = userId;
+		if(!userId || !userPw) {return;}
+		this._userService.join(userId, userPw)
+			.subscribe(
+					res => {
+						if(res) {
+							this._router.navigate(['RoomList', {userId: this.userId}]);
+						}
+					},
+					error => console.log(error)
+			)
+	}
 }
