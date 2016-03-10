@@ -24,12 +24,15 @@ export class UsersComponent implements OnInit {
 		private _routeParams: RouteParams,
 		private _userService:UserService) {}
 
-	getUsers() {
+	getRooms() {
 		this._userService.getRooms(this.userId)
 			.subscribe (
 				res => {
 					if(res) {
 						this.rooms = res;
+						for (let i = 0; i < this.rooms.length; i++) {
+							this.rooms[i].s_accessed = this._userService.toDate('YYYY-MM-DD hh:mm', this.rooms[i].accessed);
+						}
 					} else {
 						return;
 					}
@@ -40,7 +43,7 @@ export class UsersComponent implements OnInit {
 
 	ngOnInit() {
 		this.userId = this._routeParams.get('userId');
-		this.getUsers();
+		this.getRooms();
 	}
 
 	onSelect(room: Room) {this.selectedRoom = room;}
@@ -51,6 +54,9 @@ export class UsersComponent implements OnInit {
 				res => {
 					if(res) {
 						this.rooms = res;
+						for (let i = 0; i < this.rooms.length; i++) {
+							this.rooms[i].s_accessed = this._userService.toDate('YYYY-MM-DD hh:mm', this.rooms[i].accessed);
+						}
 						//this._router.navigate( ['RoomList', {userId: this.userId}] );
 					}
 				}

@@ -5,18 +5,47 @@ let mongorito = require("mongorito");
 let bodyParser = require("body-parser");
 let co = require("co");
 let app = express();
-let http = require('http').Server(app);
+let http = require("http").Server(app);
 let io = require("socket.io")(http);
 
 let db = require("./db");
-
-let socket = null;
 
 app.use( express.static(__dirname + " /index.html") );
 app.use( express.static(__dirname + "/public") );
 app.use(bodyParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded());
+
+io.on("connection", (socket) => {
+	console.log('socket.io connected!');
+
+	socket.on("join_room", (roomId) => {
+		socket.join(roomId);
+		console.log('user joined '+roomId);
+	});
+
+	socket.on("chat_message", (data) => {
+		var log = {
+			sender: data.userId,
+			content: data.message,
+			created: data.created
+		}
+		socket.broadcast.to(data.roomId).emit("chat_message" ,log);
+
+		co(function*() {
+			var room = yield db.Room.findOne({ _id: data.roomId });
+
+			var logs = room.get('log');
+			if( logs.length >= 100 ) {
+				logs.unshift();
+			}
+			logs.push(log);
+
+			yield room.set('log', logs);
+			yield room.save();
+		})
+	})
+});
 
 app.post("/login", (req, res) => {
 	co(function*() {
@@ -26,7 +55,7 @@ app.post("/login", (req, res) => {
 			var password = user.get('pw');
 
 			if(req.body.userPw == password) {
-				res.json(user.get('_id'));
+				res.json(user.get());
 			} else {
 				console.log('wrong password');
 				res.json(false);
@@ -36,7 +65,7 @@ app.post("/login", (req, res) => {
 			res.json(false);
 		}
 	})
-})
+});
 
 app.post('/join', (req, res) => {
 	co(function*() {
@@ -56,11 +85,12 @@ app.post('/join', (req, res) => {
 
 			yield user.save();
 
-			res.json(user.get('_id'));
+			res.json(user.get());
 		}
 	})
-})
+});
 
+//get list of rooms
 app.get('/rooms/:id', (req, res) => {
 	co(function*() {
 		var user = yield db.User.findOne({ id: req.params.id });
@@ -84,8 +114,9 @@ app.get('/rooms/:id', (req, res) => {
 			res.json(false);
 		}
 	})
-})
+});
 
+//add new room
 app.post('/rooms', (req, res) => {
 	co(function*() {
 		var friend = yield db.User.findOne({ id: req.body.friendId });
@@ -134,51 +165,38 @@ app.post('/rooms', (req, res) => {
 			yield user.set('rooms', uRooms);
 			yield user.save();
 
-			var result = [];
-			for (var i = 0; i < uRooms.length; i++) {
-				result.push({
-					friend: friend.get('id'),
-					accessed: uRooms[i].accessed,
-					roomId: uRooms[i]._id
-				});
-			}
-			res.json(result);
+			res.json(user.get('rooms'));
 		}
 	})
-})
+});
 
+//join the chatting room
 app.get('/room/:roomId', (req, res) => {
 	co(function*() {
-		io.on('connection', function(s) {
-			socket = s;
-			console.log('socket.io connected!');
-		});
-
 		var room = yield db.Room.findOne({ _id: req.params.roomId });
 
 		if(room) {
+			var accessed = Date.now();
+
+			//yield room.set('accessed', accessed);
+			//yield room.save();
+
 			var log = room.get('log');
 
 			if(!log) {
 				log = [ {sender: "system", content: "this is the start of the conversation! enjoy! ;)", created: Date.now()} ];
 
 				yield room.set('log', log);
+				yield room.save();
 			}
-
-			console.log(log);
-			var accessed = Date.now();
-			//yield room.set('accessed', accessed);
-			//console.log('accessed: ' ,accessed);
-			yield room.save();
-			console.log('successfully saved');
 		}
 
 		res.json(log);
 	})
-})
+});
 
 app.get('/home', (request, response) => {
 	console.log('im home!');
-})
+});
 
-app.listen(8181, () => console.log( "Listening on 8181" ));
+http.listen(8181, () => console.log( "Listening on 8181" ));

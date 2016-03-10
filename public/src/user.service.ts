@@ -7,15 +7,19 @@ import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class UserService {
+	userId: string;
+	userOId: string
+
 	constructor (private http: Http) {}
 
 	login(userId: string, userPw: string) {
 		let body = JSON.stringify({userId, userPw});
 		let headers = new Headers({ 'Content-Type':'application/json' });
 		let options = new RequestOptions({ headers: headers});
+		let result;
 
 		return this.http.post('login', body, options)
-			.map(res => res.json())
+			.map( res => res.json() )
 			.catch(this.handleError);
 	}
 
@@ -27,6 +31,20 @@ export class UserService {
 		return this.http.post('join', body, options)
 			.map(res => res.json())
 			.catch(this.handleError);
+	}
+
+	setUserInfo(_id: string, id: string) {
+		this.userId = id;
+		this.userOId = _id;
+	}
+
+	getUserInfo() {
+		let user = {
+			userId: this.userId,
+			userOId: this.userOId
+		}
+
+		return user;
 	}
 
 	getRooms(userId: string) {
@@ -65,6 +83,31 @@ export class UserService {
 		return this.http.get('rooms')
 			.map(res => res.json())
 			.catch(this.handleError);
+	}
+
+	toDate (format: string, time: number) {
+		if(time <= 0) {
+			return 'N/A';
+		}
+
+		let d = new Date(time);
+
+		let f = (n) => {
+			if (n <= 9) {
+				return '0' + n;
+			} else {
+				return '' + n;
+			}
+		};
+
+		if (format == 'YYYY-MM-DD') {
+			return d.getFullYear() + '-' + f(d.getMonth() + 1) + '-' + f(d.getDate());
+		} else if (format == 'YYYY-MM-DD hh:mm') {
+			return d.getFullYear() + '-' + f(d.getMonth() + 1) + '-' + f(d.getDate()) + ' ' +
+				f(d.getHours()) + ':' + f(d.getMinutes());
+		}	else {
+			console.log('Illegal date format: ' + format);
+		}
 	}
 
 	private handleError (error: Response) {

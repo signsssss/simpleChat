@@ -11,7 +11,7 @@ import {UserDetailComponent} from './user-detail.component';
 @Component ({
 	selector:'my-app',
 	template:`
-		<h1>{{title}}</h1>
+		<h1 id="title">{{title}}</h1>
 		<router-outlet></router-outlet>
 	`,
 	styleUrls: ['src/css/app.component.css'],

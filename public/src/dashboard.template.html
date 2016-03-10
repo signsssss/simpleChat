@@ -1,12 +1,24 @@
-<div class="grid grid-pad">
-	<div class="login">
-		<label id="id">ID: 
-			<input #userId type="text"/>
-		</label>
-		<label id="password">Password: 
-			<input #userPw type="password"/>
-		</label>
-	</div>
-	<button (click)="login(userId.value, userPw.value)">login</button>
-	<button (click)="join(userId.value, userPw.value)">join</button>
+<!-- div class="grid grid-pad" -->
+<div class="container">
+  <div class="outer">
+    <div class="inner">
+      <div class="centered">
+				<div class="login">
+					<h2>LOGIN</h2>
+					<div class="comp">
+						<label>ID:
+							<input #userId type="text"/>
+						</label>
+					</div>
+					<div class="comp">
+						<label>Password:
+							<input #userPw type="password" (keyup.enter)="login(userId.value, userPw.value)"/>
+						</label>
+					</div>
+					<button (click)="login(userId.value, userPw.value)">login</button>
+					<button (click)="join(userId.value, userPw.value)">join</button>
+				</div>
+      </div>
+    </div>
+  </div>
 </div>

@@ -33,12 +33,15 @@ System.register(['angular2/core', 'angular2/router', './user-detail.component', 
                     this._routeParams = _routeParams;
                     this._userService = _userService;
                 }
-                UsersComponent.prototype.getUsers = function () {
+                UsersComponent.prototype.getRooms = function () {
                     var _this = this;
                     this._userService.getRooms(this.userId)
                         .subscribe(function (res) {
                         if (res) {
                             _this.rooms = res;
+                            for (var i = 0; i < _this.rooms.length; i++) {
+                                _this.rooms[i].s_accessed = _this._userService.toDate('YYYY-MM-DD hh:mm', _this.rooms[i].accessed);
+                            }
                         }
                         else {
                             return;
@@ -47,7 +50,7 @@ System.register(['angular2/core', 'angular2/router', './user-detail.component', 
                 };
                 UsersComponent.prototype.ngOnInit = function () {
                     this.userId = this._routeParams.get('userId');
-                    this.getUsers();
+                    this.getRooms();
                 };
                 UsersComponent.prototype.onSelect = function (room) { this.selectedRoom = room; };
                 UsersComponent.prototype.addRoom = function (friendId) {
@@ -56,6 +59,9 @@ System.register(['angular2/core', 'angular2/router', './user-detail.component', 
                         .subscribe(function (res) {
                         if (res) {
                             _this.rooms = res;
+                            for (var i = 0; i < _this.rooms.length; i++) {
+                                _this.rooms[i].s_accessed = _this._userService.toDate('YYYY-MM-DD hh:mm', _this.rooms[i].accessed);
+                            }
                         }
                     });
                 };

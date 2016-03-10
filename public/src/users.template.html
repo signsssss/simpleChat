@@ -1,19 +1,23 @@
-<h2>ROOMS</h2>
-<ul class="rooms">
-	<li *ngFor="#room of rooms"
-		[class.selected]="room === selectedRoom"
-		(click)="onSelect(room)">
-		<span class="badge">{{room.friend}}</span> {{room.accessed}}
-	</li>
-</ul>
-<div *ngIf="selectedRoom">
-	<h2> {{selectedRoom.friend | uppercase}} it is!</h2>
-	<button (click)="joinChatting()">Join the Chat</button>
-</div>
-<input #friendId type="text"/>
-<button (click)="addRoom(friendId.value)">+</button>
-<!--
-<div><label>id: </label>{{user.id}}</div>
-<div><label>name: </label><input [(ngModel)]="user.name" placeholder="name"></div>
-<div><label>password: </label><input type="password" [(ngModel)]="user.password" placeholder="password"></div>
--->
+<div class="container">
+	<div class="outer">
+		<div class="inner">
+				<h2>ROOMS</h2>
+				<div class="list">
+					<ul class="rooms">
+						<li *ngFor="#room of rooms"
+						[class.selected]="room === selectedRoom"
+						(click)="onSelect(room)">
+						<span class="badge">{{room.friend}}</span> {{room.s_accessed}}
+					</li>
+					</ul>
+				<div>
+					<div *ngIf="selectedRoom">
+						<h2> {{selectedRoom.friend | uppercase}} </h2>
+						<button (click)="joinChatting()">Join the Chat</button>
+					</div>
+					<input #friendId type="text"/>
+					<button (click)="addRoom(friendId.value)">+</button>
+				</div>
+			
+		</div>
+	</div>

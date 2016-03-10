@@ -43,7 +43,7 @@ System.register(['angular2/router', 'angular2/core', 'angular2/http', './user.se
                 AppComponent = __decorate([
                     core_1.Component({
                         selector: 'my-app',
-                        template: "\n\t\t<h1>{{title}}</h1>\n\t\t<router-outlet></router-outlet>\n\t",
+                        template: "\n\t\t<h1 id=\"title\">{{title}}</h1>\n\t\t<router-outlet></router-outlet>\n\t",
                         styleUrls: ['src/css/app.component.css'],
                         directives: [router_1.ROUTER_DIRECTIVES],
                         providers: [

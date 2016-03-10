@@ -39,6 +39,7 @@ System.register(['angular2/core', 'angular2/router', './user.service'], function
                     this._userService.login(userId, userPw)
                         .subscribe(function (res) {
                         if (res) {
+                            _this._userService.setUserInfo(res._id, res.id);
                             _this._router.navigate(['RoomList', { userId: _this.userId }]);
                         }
                     }, function (error) { return console.log(error); });
@@ -52,6 +53,7 @@ System.register(['angular2/core', 'angular2/router', './user.service'], function
                     this._userService.join(userId, userPw)
                         .subscribe(function (res) {
                         if (res) {
+                            _this._userService.setUserInfo(res._id, res.id);
                             _this._router.navigate(['RoomList', { userId: _this.userId }]);
                         }
                     }, function (error) { return console.log(error); });

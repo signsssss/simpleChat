@@ -32,6 +32,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
                     var body = JSON.stringify({ userId: userId, userPw: userPw });
                     var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
                     var options = new http_1.RequestOptions({ headers: headers });
+                    var result;
                     return this.http.post('login', body, options)
                         .map(function (res) { return res.json(); })
                         .catch(this.handleError);
@@ -43,6 +44,17 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
                     return this.http.post('join', body, options)
                         .map(function (res) { return res.json(); })
                         .catch(this.handleError);
+                };
+                UserService.prototype.setUserInfo = function (_id, id) {
+                    this.userId = id;
+                    this.userOId = _id;
+                };
+                UserService.prototype.getUserInfo = function () {
+                    var user = {
+                        userId: this.userId,
+                        userOId: this.userOId
+                    };
+                    return user;
                 };
                 UserService.prototype.getRooms = function (userId) {
                     var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
@@ -73,6 +85,30 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
                     return this.http.get('rooms')
                         .map(function (res) { return res.json(); })
                         .catch(this.handleError);
+                };
+                UserService.prototype.toDate = function (format, time) {
+                    if (time <= 0) {
+                        return 'N/A';
+                    }
+                    var d = new Date(time);
+                    var f = function (n) {
+                        if (n <= 9) {
+                            return '0' + n;
+                        }
+                        else {
+                            return '' + n;
+                        }
+                    };
+                    if (format == 'YYYY-MM-DD') {
+                        return d.getFullYear() + '-' + f(d.getMonth() + 1) + '-' + f(d.getDate());
+                    }
+                    else if (format == 'YYYY-MM-DD hh:mm') {
+                        return d.getFullYear() + '-' + f(d.getMonth() + 1) + '-' + f(d.getDate()) + ' ' +
+                            f(d.getHours()) + ':' + f(d.getMinutes());
+                    }
+                    else {
+                        console.log('Illegal date format: ' + format);
+                    }
                 };
                 UserService.prototype.handleError = function (error) {
                     console.log(error);

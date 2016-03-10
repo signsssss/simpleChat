@@ -1,15 +1,25 @@
 label {
   display: inline-block;
   width: 3em;
-  margin: .5em 0;
+  margin: .5em 1.5em 0 0;
   color: #607D8B;
   font-weight: bold;
 }
+
+.myMsg label {
+  display: inline-block;
+  width: 3em;
+  margin: .5em 1.5em 0 0;
+  color: #6E4FB0;
+  font-weight: bold;
+}
+
 input {
   height: 2em;
   font-size: 1em;
   padding-left: .4em;
 }
+
 button {
   margin-top: 20px;
   font-family: Arial;
@@ -19,12 +29,60 @@ button {
   border-radius: 4px;
   cursor: pointer; cursor: hand;
 }
+
 button:hover {
   background-color: #cfd8dc;
 }
+
 button:disabled {
   background-color: #eee;
-  color: #ccc; 
+  color: #ccc;
   cursor: auto;
 }
 
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font: 13px Helvetica, Arial;
+}
+
+form {
+  background: #eee;
+  padding: 3px;
+  position: fixed;
+  bottom: 0;
+  width: 95%;
+  border-radius: 4px;
+}
+
+form input {
+  border: 0;
+  padding: 10px;
+  width: 90%;
+  margin-right: .5%;
+}
+form button {
+  width: 9%;
+  background: #F2A48A;
+  border: none;
+  padding: 10px;
+  color: white;
+}
+
+#messages {
+  list-style-type: none;
+  margin: 0 0 10em 0;
+  padding: 0;
+}
+
+#messages li {
+  padding: 5px 10px;
+}
+
+#messages li:nth-child(odd) {
+  background: #eee;
+}

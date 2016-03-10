@@ -25,6 +25,7 @@ export class DashboardComponent {
 			.subscribe(
 				res => {
 					if(res) {
+						this._userService.setUserInfo(res._id, res.id);
 						this._router.navigate(['RoomList', {userId: this.userId}]);
 					}
 				},
@@ -39,6 +40,7 @@ export class DashboardComponent {
 			.subscribe(
 					res => {
 						if(res) {
+							this._userService.setUserInfo(res._id, res.id);
 							this._router.navigate(['RoomList', {userId: this.userId}]);
 						}
 					},
