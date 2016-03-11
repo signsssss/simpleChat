@@ -1,4 +1,4 @@
-System.register(['angular2/router', 'angular2/core', 'angular2/http', './user.service', './users.component', './dashboard.component', './user-detail.component'], function(exports_1, context_1) {
+System.register(['angular2/router', 'angular2/core', 'angular2/http', './chat.service', './roomlist.component', './login.component', './chatting-room.component'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,7 +10,7 @@ System.register(['angular2/router', 'angular2/core', 'angular2/http', './user.se
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var router_1, core_1, http_1, user_service_1, users_component_1, dashboard_component_1, user_detail_component_1;
+    var router_1, core_1, http_1, chat_service_1, roomlist_component_1, login_component_1, chatting_room_component_1;
     var AppComponent;
     return {
         setters:[
@@ -23,17 +23,17 @@ System.register(['angular2/router', 'angular2/core', 'angular2/http', './user.se
             function (http_1_1) {
                 http_1 = http_1_1;
             },
-            function (user_service_1_1) {
-                user_service_1 = user_service_1_1;
+            function (chat_service_1_1) {
+                chat_service_1 = chat_service_1_1;
             },
-            function (users_component_1_1) {
-                users_component_1 = users_component_1_1;
+            function (roomlist_component_1_1) {
+                roomlist_component_1 = roomlist_component_1_1;
             },
-            function (dashboard_component_1_1) {
-                dashboard_component_1 = dashboard_component_1_1;
+            function (login_component_1_1) {
+                login_component_1 = login_component_1_1;
             },
-            function (user_detail_component_1_1) {
-                user_detail_component_1 = user_detail_component_1_1;
+            function (chatting_room_component_1_1) {
+                chatting_room_component_1 = chatting_room_component_1_1;
             }],
         execute: function() {
             AppComponent = (function () {
@@ -49,25 +49,25 @@ System.register(['angular2/router', 'angular2/core', 'angular2/http', './user.se
                         providers: [
                             http_1.HTTP_PROVIDERS,
                             router_1.ROUTER_PROVIDERS,
-                            user_service_1.UserService
+                            chat_service_1.ChatService
                         ]
                     }),
                     router_1.RouteConfig([
                         {
                             path: '/rooms',
                             name: 'RoomList',
-                            component: users_component_1.UsersComponent
+                            component: roomlist_component_1.RoomlistComponent
                         },
                         {
                             path: '/home',
                             name: 'Dashboard',
-                            component: dashboard_component_1.DashboardComponent,
+                            component: login_component_1.LoginComponent,
                             useAsDefault: true
                         },
                         {
                             path: '/room/:roomId',
                             name: 'Room',
-                            component: user_detail_component_1.UserDetailComponent
+                            component: chatting_room_component_1.ChattingRoomComponent
                         }
                     ]), 
                     __metadata('design:paramtypes', [])

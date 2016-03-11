@@ -3,17 +3,17 @@ import {Router, RouteParams} from 'angular2/router';
 
 import {User} from './user';
 import {Room} from './room'
-import {UserDetailComponent} from './user-detail.component';
-import {UserService} from './user.service';
+import {ChattingRoomComponent} from './chatting-room.component';
+import {ChatService} from './chat.service';
 
 @Component({
 	selector: 'my-users',
-	templateUrl: 'src/users.template.html',
-	styleUrls: ['src/css/users.component.css'],
-	directives: [UserDetailComponent]
+	templateUrl: 'src/template/roomlist.template.html',
+	styleUrls: ['src/css/roomlist.component.css'],
+	directives: [ChattingRoomComponent]
 })
 
-export class UsersComponent implements OnInit {
+export class RoomlistComponent implements OnInit {
 	selectedRoom: Room;
 	rooms: Room[];
 	userId: string;
@@ -22,16 +22,16 @@ export class UsersComponent implements OnInit {
 	constructor(
 		private _router: Router,
 		private _routeParams: RouteParams,
-		private _userService:UserService) {}
+		private _chatService:ChatService) {}
 
 	getRooms() {
-		this._userService.getRooms(this.userId)
+		this._chatService.getRooms(this.userId)
 			.subscribe (
 				res => {
 					if(res) {
 						this.rooms = res;
 						for (let i = 0; i < this.rooms.length; i++) {
-							this.rooms[i].s_accessed = this._userService.toDate('YYYY-MM-DD hh:mm', this.rooms[i].accessed);
+							this.rooms[i].s_accessed = this._chatService.toDate('YYYY-MM-DD hh:mm', this.rooms[i].accessed);
 						}
 					} else {
 						return;
@@ -49,15 +49,14 @@ export class UsersComponent implements OnInit {
 	onSelect(room: Room) {this.selectedRoom = room;}
 
 	addRoom(friendId: string) {
-		this._userService.addRoom(this.userId, friendId)
+		this._chatService.addRoom(this.userId, friendId)
 			.subscribe (
 				res => {
 					if(res) {
 						this.rooms = res;
 						for (let i = 0; i < this.rooms.length; i++) {
-							this.rooms[i].s_accessed = this._userService.toDate('YYYY-MM-DD hh:mm', this.rooms[i].accessed);
+							this.rooms[i].s_accessed = this._chatService.toDate('YYYY-MM-DD hh:mm', this.rooms[i].accessed);
 						}
-						//this._router.navigate( ['RoomList', {userId: this.userId}] );
 					}
 				}
 			);

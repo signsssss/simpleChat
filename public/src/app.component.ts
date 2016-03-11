@@ -2,10 +2,10 @@ import {RouteConfig, ROUTER_DIRECTIVES, ROUTER_PROVIDERS} from 'angular2/router'
 import {Component} from 'angular2/core';
 import {HTTP_PROVIDERS} from 'angular2/http';
 
-import {UserService} from './user.service';
-import {UsersComponent} from './users.component';
-import {DashboardComponent} from './dashboard.component';
-import {UserDetailComponent} from './user-detail.component';
+import {ChatService} from './chat.service';
+import {RoomlistComponent} from './roomlist.component';
+import {LoginComponent} from './login.component';
+import {ChattingRoomComponent} from './chatting-room.component';
 
 
 @Component ({
@@ -19,7 +19,7 @@ import {UserDetailComponent} from './user-detail.component';
 	providers: [
 		HTTP_PROVIDERS,
 		ROUTER_PROVIDERS,
-		UserService
+		ChatService
 	]
 })
 
@@ -27,18 +27,18 @@ import {UserDetailComponent} from './user-detail.component';
 	{
 		path:'/rooms',
 		name:'RoomList',
-		component: UsersComponent
+		component: RoomlistComponent
 	},
 	{
 		path: '/home',
 		name: 'Dashboard',
-		component: DashboardComponent,
+		component: LoginComponent,
 		useAsDefault: true
 	},
 	{
 		path:'/room/:roomId',
 		name:'Room',
-		component: UserDetailComponent
+		component: ChattingRoomComponent
 	}
 ])
 

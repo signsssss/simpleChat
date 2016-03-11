@@ -6,7 +6,7 @@ import {Headers, RequestOptions, Http, Response} from 'angular2/http';
 import {Observable} from 'rxjs/Observable';
 
 @Injectable()
-export class UserService {
+export class ChatService {
 	userId: string;
 	userOId: string
 

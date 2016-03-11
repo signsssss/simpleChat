@@ -1,4 +1,4 @@
-System.register(['angular2/router', 'angular2/core', 'angular2/common', './user.service'], function(exports_1, context_1) {
+System.register(['angular2/router', 'angular2/core', 'angular2/common', './chat.service'], function(exports_1, context_1) {
     "use strict";
     var __moduleName = context_1 && context_1.id;
     var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -10,8 +10,8 @@ System.register(['angular2/router', 'angular2/core', 'angular2/common', './user.
     var __metadata = (this && this.__metadata) || function (k, v) {
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
-    var router_1, core_1, common_1, user_service_1;
-    var UserDetailComponent;
+    var router_1, core_1, common_1, chat_service_1;
+    var ChattingRoomComponent;
     return {
         setters:[
             function (router_1_1) {
@@ -23,17 +23,17 @@ System.register(['angular2/router', 'angular2/core', 'angular2/common', './user.
             function (common_1_1) {
                 common_1 = common_1_1;
             },
-            function (user_service_1_1) {
-                user_service_1 = user_service_1_1;
+            function (chat_service_1_1) {
+                chat_service_1 = chat_service_1_1;
             }],
         execute: function() {
-            UserDetailComponent = (function () {
-                function UserDetailComponent(_userService, _routeParams) {
-                    this._userService = _userService;
+            ChattingRoomComponent = (function () {
+                function ChattingRoomComponent(_chatService, _routeParams) {
+                    this._chatService = _chatService;
                     this._routeParams = _routeParams;
                     this.isMyMsg = true;
                 }
-                UserDetailComponent.prototype.ngOnInit = function () {
+                ChattingRoomComponent.prototype.ngOnInit = function () {
                     var _this = this;
                     this.roomId = this._routeParams.get('roomId');
                     this.chatBox = "";
@@ -45,11 +45,11 @@ System.register(['angular2/router', 'angular2/core', 'angular2/common', './user.
                         }
                         _this.logs.push(msg);
                     });
-                    this._userService.joinChatting(this.roomId)
+                    this._chatService.joinChatting(this.roomId)
                         .subscribe(function (res) {
                         _this.logs = res;
                         console.log('this.logs.length: ', _this.logs);
-                        var userId = _this._userService.getUserInfo().userId;
+                        var userId = _this._chatService.getUserInfo().userId;
                         for (var i = 0; i < _this.logs.length; i++) {
                             if (_this.logs[i].sender == userId) {
                                 _this.logs[i].sender = "me";
@@ -57,34 +57,32 @@ System.register(['angular2/router', 'angular2/core', 'angular2/common', './user.
                         }
                     });
                 };
-                UserDetailComponent.prototype.goBack = function () {
-                    window.history.back();
-                };
-                UserDetailComponent.prototype.send = function (message) {
+                ChattingRoomComponent.prototype.send = function (message) {
                     if (message.length == 0) {
                         return;
                     }
-                    var scroll = document.getElementById("messages");
-                    scroll.scrollTop = scroll.scrollHeight;
-                    var log = {
-                        sender: "me",
-                        content: message,
-                        created: Date.now()
-                    };
-                    if (this.logs.length >= 100) {
-                        this.logs.unshift();
+                    else {
+                        console.log(message);
+                        var log = {
+                            sender: "me",
+                            content: message,
+                            created: Date.now()
+                        };
+                        if (this.logs.length >= 100) {
+                            this.logs.unshift();
+                        }
+                        this.logs.push(log);
+                        var data = {
+                            message: message,
+                            userId: this._chatService.getUserInfo().userId,
+                            roomId: this.roomId,
+                            created: log.created
+                        };
+                        this.socket.emit("chat_message", data);
+                        this.chatBox = "";
                     }
-                    this.logs.push(log);
-                    var data = {
-                        message: message,
-                        userId: this._userService.getUserInfo().userId,
-                        roomId: this.roomId,
-                        created: log.created
-                    };
-                    this.socket.emit("chat_message", data);
-                    this.chatBox = "";
                 };
-                UserDetailComponent.prototype.checkSender = function (sender) {
+                ChattingRoomComponent.prototype.checkSender = function (sender) {
                     if (sender == "me") {
                         return true;
                     }
@@ -92,19 +90,19 @@ System.register(['angular2/router', 'angular2/core', 'angular2/common', './user.
                         return false;
                     }
                 };
-                UserDetailComponent = __decorate([
+                ChattingRoomComponent = __decorate([
                     core_1.Component({
                         selector: 'my-user-detail',
-                        templateUrl: 'src/user-detail.template.html',
-                        styleUrls: ['src/css/user-detail.component.css'],
+                        templateUrl: 'src/template/chatting-room.template.html',
+                        styleUrls: ['src/css/chatting-room.component.css'],
                         directives: [common_1.NgClass]
                     }), 
-                    __metadata('design:paramtypes', [user_service_1.UserService, router_1.RouteParams])
-                ], UserDetailComponent);
-                return UserDetailComponent;
+                    __metadata('design:paramtypes', [chat_service_1.ChatService, router_1.RouteParams])
+                ], ChattingRoomComponent);
+                return ChattingRoomComponent;
             }());
-            exports_1("UserDetailComponent", UserDetailComponent);
+            exports_1("ChattingRoomComponent", ChattingRoomComponent);
         }
     }
 });
-//# sourceMappingURL=user-detail.component.js.map
+//# sourceMappingURL=chatting-room.component.js.map

@@ -11,7 +11,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
         if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
     };
     var core_1, http_1, Observable_1;
-    var UserService;
+    var ChatService;
     return {
         setters:[
             function (core_1_1) {
@@ -24,11 +24,11 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
                 Observable_1 = Observable_1_1;
             }],
         execute: function() {
-            UserService = (function () {
-                function UserService(http) {
+            ChatService = (function () {
+                function ChatService(http) {
                     this.http = http;
                 }
-                UserService.prototype.login = function (userId, userPw) {
+                ChatService.prototype.login = function (userId, userPw) {
                     var body = JSON.stringify({ userId: userId, userPw: userPw });
                     var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
                     var options = new http_1.RequestOptions({ headers: headers });
@@ -37,7 +37,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
                         .map(function (res) { return res.json(); })
                         .catch(this.handleError);
                 };
-                UserService.prototype.join = function (userId, userPw) {
+                ChatService.prototype.join = function (userId, userPw) {
                     var body = JSON.stringify({ userId: userId, userPw: userPw });
                     var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
                     var options = new http_1.RequestOptions({ headers: headers });
@@ -45,25 +45,25 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
                         .map(function (res) { return res.json(); })
                         .catch(this.handleError);
                 };
-                UserService.prototype.setUserInfo = function (_id, id) {
+                ChatService.prototype.setUserInfo = function (_id, id) {
                     this.userId = id;
                     this.userOId = _id;
                 };
-                UserService.prototype.getUserInfo = function () {
+                ChatService.prototype.getUserInfo = function () {
                     var user = {
                         userId: this.userId,
                         userOId: this.userOId
                     };
                     return user;
                 };
-                UserService.prototype.getRooms = function (userId) {
+                ChatService.prototype.getRooms = function (userId) {
                     var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
                     var options = new http_1.RequestOptions({ headers: headers });
                     return this.http.get('rooms/' + userId)
                         .map(function (res) { return res.json(); })
                         .catch(this.handleError);
                 };
-                UserService.prototype.addRoom = function (userId, friendId) {
+                ChatService.prototype.addRoom = function (userId, friendId) {
                     var body = JSON.stringify({ userId: userId, friendId: friendId });
                     var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
                     var options = new http_1.RequestOptions({ headers: headers });
@@ -71,14 +71,14 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
                         .map(function (res) { return res.json(); })
                         .catch(this.handleError);
                 };
-                UserService.prototype.joinChatting = function (roomId) {
+                ChatService.prototype.joinChatting = function (roomId) {
                     var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
                     var options = new http_1.RequestOptions({ headers: headers });
                     return this.http.get('room/' + roomId)
                         .map(function (res) { return res.json(); })
                         .catch(this.handleError);
                 };
-                UserService.prototype.getUser = function (userId) {
+                ChatService.prototype.getUser = function (userId) {
                     var body = JSON.stringify({ userId: userId });
                     var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
                     var options = new http_1.RequestOptions({ headers: headers });
@@ -86,7 +86,7 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
                         .map(function (res) { return res.json(); })
                         .catch(this.handleError);
                 };
-                UserService.prototype.toDate = function (format, time) {
+                ChatService.prototype.toDate = function (format, time) {
                     if (time <= 0) {
                         return 'N/A';
                     }
@@ -110,18 +110,18 @@ System.register(['angular2/core', 'angular2/http', 'rxjs/Observable'], function(
                         console.log('Illegal date format: ' + format);
                     }
                 };
-                UserService.prototype.handleError = function (error) {
+                ChatService.prototype.handleError = function (error) {
                     console.log(error);
                     return Observable_1.Observable.throw(error.json().error || 'Server error');
                 };
-                UserService = __decorate([
+                ChatService = __decorate([
                     core_1.Injectable(), 
                     __metadata('design:paramtypes', [http_1.Http])
-                ], UserService);
-                return UserService;
+                ], ChatService);
+                return ChatService;
             }());
-            exports_1("UserService", UserService);
+            exports_1("ChatService", ChatService);
         }
     }
 });
-//# sourceMappingURL=user.service.js.map
+//# sourceMappingURL=chat.service.js.map

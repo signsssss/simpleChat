@@ -10,7 +10,6 @@ let io = require("socket.io")(http);
 
 let db = require("./db");
 
-app.use( express.static(__dirname + " /index.html") );
 app.use( express.static(__dirname + "/public") );
 app.use(bodyParser());
 app.use(bodyParser.json());
@@ -170,7 +169,7 @@ app.post('/rooms', (req, res) => {
 	})
 });
 
-//join the chatting room
+//join the selected chatting room
 app.get('/room/:roomId', (req, res) => {
 	co(function*() {
 		var room = yield db.Room.findOne({ _id: req.params.roomId });
@@ -184,7 +183,7 @@ app.get('/room/:roomId', (req, res) => {
 			var log = room.get('log');
 
 			if(!log) {
-				log = [ {sender: "system", content: "this is the start of the conversation! enjoy! ;)", created: Date.now()} ];
+				log = [ {sender: "system", content: "this is the start of a conversation with your friend! enjoy! ;)", created: Date.now()} ];
 
 				yield room.set('log', log);
 				yield room.save();

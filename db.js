@@ -5,36 +5,6 @@ var validate = require('jsonschema').validate;
 
 var Model = Mongorito.Model;
 
-var hash = function(message) {
-	return crypto.createHash('sha512').update(message).digest('hex');
-};
-
-var algorithm = 'aes-256-ctr';
-var password = new Buffer('dfe8a906cbc6247a3169f5c6c85c6df4', 'utf8').toString('hex');
-
-var encrypt = function(msg) {
-	/*var cipher = crypto.createCipher(algorithm, password);
-	var encrypted = cipher.update(msg, 'utf8', 'hex');
-	encrypted += cipher.final('hex');
-
-	return encrypted;*/
-	return crypto.createHash('sha512').update(cnonce + user.password + req.session.snonce).digest('hex');
-
-};
-
-var decrypt = function(msg) {
-	var decipher = crypto.createDecipher(algorithm, password);
-	var decrypted = decipher.update(msg, 'hex', 'utf8');
-	decrypted += decipher.final('utf8');
-
-	return decrypted;
-};
-
-var random = function() {
-	return Math.random().toString(16).substring(2) +
-		Math.random().toString(16).substring(2);
-};
-
 Mongorito.connect('localhost/simpleChat');
 
 var UserSchema = {
@@ -136,8 +106,3 @@ exports.RoomSchema = RoomSchema;
 
 exports.User = User;
 exports.Room = Room;
-
-exports.hash = hash;
-exports.encrypt = encrypt;
-exports.decrypt = decrypt;
-exports.random = random;
